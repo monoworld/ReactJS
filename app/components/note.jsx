@@ -38,20 +38,30 @@ export default class Note extends React.Component {
   };
   renderNote = () => {
     // If the user clicks a normal note, trigger editing logic.
-    return <div onClick={this.edit}>{this.props.task}</div>;
+    const onDelete = this.props.onDelete;
+
+    return (
+      <div onClick={this.edit}>
+        <span className="task">{this.props.task}</span>
+        {onDelete ? this.renderDelete() : null }
+      </div>
+    );
   };
+
   edit = () => {
     // Enter edit mode.
     this.setState({
       editing: true
     });
   };
+
   checkEnter = (e) => {
     // The user hit *enter*, let's finish up.
     if(e.key === 'Enter') {
       this.finishEdit(e);
     }
   };
+
   finishEdit = (e) => {
     // `Note` will trigger an optional `onEdit` callback once it
     // has a new value. We will use this to communicate the change to
@@ -71,5 +81,11 @@ export default class Note extends React.Component {
         editing: false
       });
     }
+  };
+
+  renderDelete = () => {
+    return <button
+      className="delete-note"
+      onClick={this.props.onDelete}>x</button>;
   };
 }
